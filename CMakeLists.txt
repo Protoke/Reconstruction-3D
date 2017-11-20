@@ -4,7 +4,7 @@ project(Reconstruction-3D)
 set(CMAKE_CXX_STANDARD 11)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES main.cpp Calibration.cpp Camera.cpp Plan.cpp)
 add_executable(Reconstruction-3D ${SOURCE_FILES})
 
 # include opencv
