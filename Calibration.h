@@ -14,7 +14,7 @@ using namespace std;
 
 void cameraParams(const Mat& image, Camera& camera);
 
-vector<Point2f> referencePoints(const Mat& image);
+vector<Point2f> referencePoints(const Mat& image, Size boardSize, Mat& display);
 
 void computeError(const Camera& camera);
 
