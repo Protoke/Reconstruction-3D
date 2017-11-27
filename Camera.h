@@ -18,6 +18,8 @@ public:
     Camera();
     Camera(string calibrationFile);
 
+    void correctImage(Mat& img);
+
 private:
     Point2f center;
     Plan focalPlan;
