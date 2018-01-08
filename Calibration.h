@@ -12,7 +12,7 @@
 using namespace cv;
 using namespace std;
 
-void cameraParams(const Mat& image, Camera& camera);
+bool cameraParams(const vector<Mat>& images, Camera& camera, Size boardSize, float cellSize, Mat& display);
 
 vector<Point2f> referencePoints(const Mat& image, Size boardSize, Mat& display);
 

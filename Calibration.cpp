@@ -4,6 +4,61 @@
 
 #include "Calibration.h"
 
+#include <iostream>
+
+using namespace std;
+
+
+bool cameraParams(const vector<Mat>& images, Camera& camera, Size boardSize, float cellSize, Mat& display){
+    // Compute corners positions
+    vector<vector<Point2f>> corners;
+
+    int count = 0;
+    for (int i = 0; i < images.size(); ++i) {
+        vector<Point2f> cornersImg = referencePoints(images[i], boardSize, display);
+        if(cornersImg.size() > 0){
+            corners.push_back(cornersImg);
+            count++;
+        }
+    }
+
+//    cout << count << endl;
+
+    if(count < 2)
+        return false;
+
+    // Compute real corners positions
+    vector<vector<Point3f>> realCorners;
+
+    vector<Point3f> tempCorners;
+    for (int i = 0; i < boardSize.height; ++i) {
+        for (int j = 0; j < boardSize.width; ++j) {
+            tempCorners.push_back(Point3f(float(j)*cellSize, float(i)*cellSize, 0));
+        }
+    }
+    realCorners.push_back(tempCorners);
+    realCorners.resize(corners.size(), realCorners[0]);
+
+/*
+    cout << "corners : " << corners[0].size() << endl ;//<< corners[0] << endl;
+    cout << "realCorners : " << realCorners[0].size() << endl ;//<< realCorners[0] << endl;
+*/
+
+    // Outputs params
+    Mat cameraMatrix = Mat::eye(3, 3, CV_64F);
+    Mat distCoeffs = Mat::zeros(8, 1, CV_64F);
+    vector<Mat> rVecs, tVecs;
+
+    double rms = calibrateCamera(realCorners, corners, boardSize, cameraMatrix,
+                                 distCoeffs, rVecs, tVecs, /*s.flag|*/CV_CALIB_FIX_K4|CV_CALIB_FIX_K5);
+
+    cout << "rms : " << rms << endl << "cameraMatrix : " << cameraMatrix << endl;
+
+    camera.cameraMatrix = cameraMatrix;
+    camera.distCoeffs = distCoeffs;
+
+    return true;
+}
 
 vector<Point2f> referencePoints(const Mat& image, Size boardSize, Mat& display){
 
@@ -21,7 +76,7 @@ vector<Point2f> referencePoints(const Mat& image, Size boardSize, Mat& display){
                  TermCriteria(CV_TERMCRIT_EPS+CV_TERMCRIT_ITER, 30, 0.1 ));
 
     /* Display */
-    image.copyTo(display);
+    display = image.clone();
     drawChessboardCorners(display, boardSize, corners, found);
 
     return corners;

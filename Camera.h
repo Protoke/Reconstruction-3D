@@ -15,15 +15,10 @@ using namespace cv;
 
 class Camera {
 public:
-    Camera();
-    Camera(string calibrationFile);
+    void correctImage(const Mat& img, Mat& result);
 
-    void correctImage(Mat& img);
-
-private:
-    Point2f center;
-    Plan focalPlan;
-    Size scaleFactor;
+    Mat cameraMatrix;
+    Mat distCoeffs;
 };
 
 
