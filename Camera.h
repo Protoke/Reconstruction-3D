@@ -8,7 +8,6 @@
 #include <string>
 
 #include "opencv2/opencv.hpp"
-#include "Plan.h"
 
 using namespace std;
 using namespace cv;
@@ -19,6 +18,7 @@ public:
 
     Mat cameraMatrix;
     Mat distCoeffs;
+    double error;
 };
 
 

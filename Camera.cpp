@@ -5,5 +5,5 @@
 #include "Camera.h"
 
 void Camera::correctImage(const Mat& img, Mat& result){
-    undistort(result, img, cameraMatrix, distCoeffs);
+    undistort(img, result, cameraMatrix, distCoeffs);
 }

@@ -16,7 +16,5 @@ bool cameraParams(const vector<Mat>& images, Camera& camera, Size boardSize, flo
 
 vector<Point2f> referencePoints(const Mat& image, Size boardSize, Mat& display);
 
-void computeError(const Camera& camera);
-
 
 #endif //RECONSTRUCTION_3D_CALIBRATION_H

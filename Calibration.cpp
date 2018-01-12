@@ -8,7 +8,6 @@
 
 using namespace std;
 
-
 bool cameraParams(const vector<Mat>& images, Camera& camera, Size boardSize, float cellSize, Mat& display){
     // Compute corners positions
     vector<vector<Point2f>> corners;
@@ -21,8 +20,6 @@ bool cameraParams(const vector<Mat>& images, Camera& camera, Size boardSize, flo
             count++;
         }
     }
-
-//    cout << count << endl;
 
     if(count < 2)
         return false;
@@ -39,23 +36,17 @@ bool cameraParams(const vector<Mat>& images, Camera& camera, Size boardSize, flo
     realCorners.push_back(tempCorners);
     realCorners.resize(corners.size(), realCorners[0]);
 
-/*
-    cout << "corners : " << corners[0].size() << endl ;//<< corners[0] << endl;
-    cout << "realCorners : " << realCorners[0].size() << endl ;//<< realCorners[0] << endl;
-*/
-
     // Outputs params
     Mat cameraMatrix = Mat::eye(3, 3, CV_64F);
     Mat distCoeffs = Mat::zeros(8, 1, CV_64F);
     vector<Mat> rVecs, tVecs;
 
     double rms = calibrateCamera(realCorners, corners, boardSize, cameraMatrix,
-                                 distCoeffs, rVecs, tVecs, /*s.flag|*/CV_CALIB_FIX_K4|CV_CALIB_FIX_K5);
-
-    cout << "rms : " << rms << endl << "cameraMatrix : " << cameraMatrix << endl;
+                                 distCoeffs, rVecs, tVecs /*s.flag|CV_CALIB_FIX_K4|CV_CALIB_FIX_K5*/);
 
     camera.cameraMatrix = cameraMatrix;
     camera.distCoeffs = distCoeffs;
+    camera.error = rms;
 
     return true;
 }

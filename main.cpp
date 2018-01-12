@@ -14,40 +14,34 @@ using namespace cv;
 
 int main(){
     vector<Mat> images;
-    for (int i = 1; i <= 11; ++i) {
-        string filename = "../data/chessboard" + to_string(i) + ".jpg";
-//        cout << filename << endl;
+    int nbImages = 39;
+    for (int i = 1; i <= nbImages; ++i) {
+        string filename = "./data/fish" + to_string(i) + ".jpg";
         images.push_back(imread(filename));
     }
 
-
     Mat display;
     Camera c;
-    bool found = cameraParams(images, c, Size(9, 6), 0.02, display);
+    bool found = cameraParams(images, c, Size(7, 4), 0.02, display);
 
     if(found){
-        namedWindow("chessboard", WINDOW_FREERATIO);
-        resizeWindow("chessboard", 600, 800);
-        imshow("chessboard", display);
+        cout << "error : " << c.error << endl << "cameraMatrix : " << c.cameraMatrix << endl;
 
-        Mat result;
-        images[10].copyTo(result);
-        c.correctImage(images[10], result);
+        for (int i = 0; i < 39; ++i) {
+            Mat result;
+            images[i].copyTo(result);
+            c.correctImage(images[i], result);
 
-        namedWindow("result", WINDOW_FREERATIO);
-        resizeWindow("result", 600, 800);
-        imshow("result", result);
+            namedWindow("Source", WINDOW_FREERATIO);
+            resizeWindow("Source", 600, 800);
+            imshow("Source", images[i]);
+            namedWindow("Result", WINDOW_FREERATIO);
+            resizeWindow("Result", 600, 800);
+            imshow("Result", result);
+
+            waitKey();
+        }
     }
-
-    waitKey();
 
     return 0;
 }
-
-/*
- ****** Notes ******
- *
- * Fonctions utiles : https://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html
- *
- *
- */
