@@ -42,7 +42,7 @@ bool cameraParams(const vector<Mat>& images, Camera& camera, Size boardSize, flo
     vector<Mat> rVecs, tVecs;
 
     double rms = calibrateCamera(realCorners, corners, boardSize, cameraMatrix,
-                                 distCoeffs, rVecs, tVecs /*s.flag|CV_CALIB_FIX_K4|CV_CALIB_FIX_K5*/);
+                                 distCoeffs, rVecs, tVecs, CV_CALIB_FIX_K4|CV_CALIB_FIX_K5);
 
     camera.cameraMatrix = cameraMatrix;
     camera.distCoeffs = distCoeffs;
